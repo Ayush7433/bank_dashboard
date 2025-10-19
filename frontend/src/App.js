@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AccountsView from './views/AccountsView';
 import CustomersView from './views/CustomersView';
+import TransactionView from './views/TransactionView'
 
 function App() {
   const [active, setActive] = useState('accounts');
@@ -33,11 +34,20 @@ function App() {
               Customers
             </button>
           </li>
+          <li className='nav-item'>
+            <button
+              className={`nav-link ${active === 'transactions' ? 'active' : ''}`}
+              onClick={()=> setActive('transactions')}
+              >
+                Transactions
+              </button>
+          </li>
         </ul>
 
         {/* Views */}
         {active === 'accounts' && <AccountsView />}
         {active === 'customers' && <CustomersView />}
+        {active === 'transactions'&& <TransactionView />}
       </div>
     </div>
   );
