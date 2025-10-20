@@ -1,55 +1,27 @@
-import React, { useState } from 'react';
-import AccountsView from './views/AccountsView';
-import CustomersView from './views/CustomersView';
-import TransactionView from './views/TransactionView'
+import React from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
-  const [active, setActive] = useState('accounts');
   return (
-    <div>
-      {/* Navbar */}
+    <BrowserRouter>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
-          <span className="navbar-brand mb-0 h1">Bank Dashboard</span>
+          <Link className="navbar-brand" to="/">Banking Dashboard</Link>
+          <div>
+            <Link className="btn btn-outline-light mx-2" to="/login">Login</Link>
+            <Link className="btn btn-outline-light" to="/register">Register</Link>
+          </div>
         </div>
       </nav>
 
-      {/* Content */}
-      <div className="container mt-4">
-        {/* Tabs */}
-        <ul className="nav nav-tabs mb-3">
-          <li className="nav-item">
-            <button
-              className={`nav-link ${active === 'accounts' ? 'active' : ''}`}
-              onClick={() => setActive('accounts')}
-            >
-              Accounts
-            </button>
-          </li>
-          <li className="nav-item">
-            <button
-              className={`nav-link ${active === 'customers' ? 'active' : ''}`}
-              onClick={() => setActive('customers')}
-            >
-              Customers
-            </button>
-          </li>
-          <li className='nav-item'>
-            <button
-              className={`nav-link ${active === 'transactions' ? 'active' : ''}`}
-              onClick={()=> setActive('transactions')}
-              >
-                Transactions
-              </button>
-          </li>
-        </ul>
-
-        {/* Views */}
-        {active === 'accounts' && <AccountsView />}
-        {active === 'customers' && <CustomersView />}
-        {active === 'transactions'&& <TransactionView />}
-      </div>
-    </div>
+      <Routes>
+        <Route path="/" element={<h1 className="text-center mt-5">Welcome to Banking Dashboard</h1>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
