@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
 
-export default function TransactionsTable({ refreshFlag }) {
+export default function TransactionsTable({ refreshFlag, filters }) {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    function buildQuery(filters) {
+        const params = [];
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== "" && filters[key] !== null && filters[key] !== undefined) {
+                params.push(`${encodeURIComponent(key)}=${encodeURIComponent(filters[key])}`);
+            }
+        });
+        // Always add limit
+        params.push('limit=200');
+        return params.length > 0 ? "?" + params.join("&") : "";
+    }
 
     async function fetchTransactions() {
         try {
             setLoading(true);
-            const res = await API.get('/transactions?limit=200');
+            const q = buildQuery(filters);
+            const res = await API.get('/transactions' + q);
             setTransactions(res.data || []);
         } catch (err) {
-            console.error('Error fetching transaction', err);
+            console.error("Error fetching transaction", err.response ? err.response.data : err.message);
             alert('Failed to fetch transactions.');
         } finally {
             setLoading(false);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
 import Accounts from "./AccountTable";
-import Transactions from "./TransactionTable";
+import Transactions from "../views/TransactionView";
 import Customers from "./CustomerTable";
 import { Routes, Route, Navigate } from "react-router-dom";
 
