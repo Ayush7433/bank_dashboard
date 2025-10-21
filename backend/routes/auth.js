@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const db = require('../db');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "8h";
 
 // Register route
 router.post('/register', async (req, res) => {
-
-    console.log("Incoming registration request for:");
 
     const { username, password, full_name, role } = req.body;
 
@@ -53,14 +55,14 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid password!' });
         }
 
+        //sign JWT
+        const payload = { id: user.id, username: user.username, full_name: user.full_name, role: user.role };
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+
         res.status(200).json({
             message: 'Login successful',
-            user: {
-                id: user.id,
-                username: user.username,
-                full_name: user.full_name,
-                role: user.role,
-            },
+            token,
+            user: payload
         });
 
     } catch (err) {

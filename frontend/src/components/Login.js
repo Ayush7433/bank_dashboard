@@ -2,8 +2,13 @@ import React,{ useState } from "react";
 import API from "../api";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Navigate } from "react-router-dom";
+
 
 function Login() {
+    // const token = localStorage.getItem("bd_token");
+    // if (token) return <Navigate to="/" replace />;
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -14,11 +19,11 @@ function Login() {
         setLoading(true);
         try {
             const res = await API.post('auth/login', {username, password});
-            // backend returns { message, user: { id, username, full_name, role } }
-            const user = res.data.user;
-            // Store user info in localStorage
+            const {token, user} = res.data;
+            // Store token in localStorage
+            localStorage.setItem("bd_token", token);
             localStorage.setItem("bd_user", JSON.stringify(user));
-            // naviate to root/dashboard
+            // setUser && setUser(user);
             navigate('/');
         } catch (err){
             console.error(err);

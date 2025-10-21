@@ -9,16 +9,23 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
 // import routers
+const authMiddleware = require('./middleware/authMiddleware');
+app.use('/api', authMiddleware); // Protect all /api routes
+
 const accountsRouter = require('./routes/accounts');
 const transactionsRouter = require('./routes/transactions');
 const customersRouter = require('./routes/customers');
-const authRoutes = require('./routes/auth');
+
+
 
 app.use('/api/accounts', accountsRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/customers', customersRouter);
-app.use('/api/auth', authRoutes);
+
 
 app.get('/', (req, res) => {
   res.json({ msg: 'Bank Dashboard API running' });
