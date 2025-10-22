@@ -1,8 +1,9 @@
 import React, { useState, useEffect, use } from 'react';
 import EditLoanModal from './EditLoanMoadal';
 import API from '../api';
+import { Link } from "react-router-dom";
 
-export default function LoansTable({ refreshFlag, onRefresh  }) {
+export default function LoansTable({ refreshFlag, onRefresh }) {
     const [loans, setLoans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editLoan, setEditLoan] = useState(null);
@@ -76,6 +77,9 @@ export default function LoansTable({ refreshFlag, onRefresh  }) {
                                                 onClick={() => handleDelete(loan.id)}>
                                                 Delete
                                             </button>
+                                        </td>
+                                        <td>
+                                            <Link to={`/loans/${loan.id}`}>{loan.id}</Link>
                                         </td>
                                     </tr>
                                 ))

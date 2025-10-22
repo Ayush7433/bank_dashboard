@@ -205,6 +205,17 @@ CREATE TABLE employees (
   FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE SET NULL
 );
 
+-- Loan Payments (instalments towards a loan)
+CREATE TABLE loan_payments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  loan_id INT NOT NULL,
+  payment_date DATE NOT NULL,
+  amount DECIMAL(18,2) NOT NULL,
+  status ENUM('PENDING', 'PAID', 'FAILED') DEFAULT 'PAID',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (loan_id) REFERENCES loans(id) ON DELETE CASCADE
+);
+
 -- seed a couple of currencies
 INSERT INTO currencies (code, name, symbol) VALUES ('INR','Indian Rupee','₹'),('USD','US Dollar','$');
 

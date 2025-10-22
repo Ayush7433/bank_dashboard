@@ -20,12 +20,14 @@ const accountsRouter = require('./routes/accounts');
 const transactionsRouter = require('./routes/transactions');
 const customersRouter = require('./routes/customers');
 const loansRouter = require('./routes/loans');
+const loanPaymentsRouter = require('./routes/loan_payments');
 
 
 app.use('/api/accounts', accountsRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/customers', customersRouter);
 app.use('/api/loans', loansRouter);
+app.use('/api/loan_payments', loanPaymentsRouter);
 
 app.get('/', (req, res) => {
   res.json({ msg: 'Bank Dashboard API running' });

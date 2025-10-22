@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ReqireAuth from "./components/RequireAuth";
 import AppRoutes from "./components/AppRoutes";
+import LoanDetailsView from "./views/LoansDetailsView";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         </ReqireAuth>
       }
     />
+    <Route path="/loans/:loanId" element={<LoanDetailsView />} />
   </Routes>
 </BrowserRouter>
   );
