@@ -3,6 +3,7 @@ import API from "../api";
 import Accounts from "./AccountTable";
 import Transactions from "../views/TransactionView";
 import Customers from "./CustomerTable";
+import LoansView from "../views/LoansView";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function AppRoutes() {
@@ -60,6 +61,15 @@ function AppRoutes() {
                                 Customers
                             </button>
                         </li>
+
+                        <li className="nav-item">
+                            <button
+                                className={`nav-link ${active === "LoansView" ? "active" : ""}`}
+                                onClick={() => setActive("LoansView")}
+                            >
+                                Loans
+                            </button>
+                        </li>
                     </ul>
 
                     <span className="navbar-text text-light me-3">
@@ -83,6 +93,7 @@ function AppRoutes() {
                 {active === "accounts" && <Accounts />}
                 {active === "transactions" && isAdmin && <Transactions />}
                 {active === "customers" && <Customers />}
+                {active === "LoansView" && <LoansView />}
             </div>
         </div>
     );
