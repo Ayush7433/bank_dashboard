@@ -19,13 +19,13 @@ app.use('/api', authMiddleware); // Protect all /api routes
 const accountsRouter = require('./routes/accounts');
 const transactionsRouter = require('./routes/transactions');
 const customersRouter = require('./routes/customers');
-
+const loansRouter = require('./routes/loans');
 
 
 app.use('/api/accounts', accountsRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/customers', customersRouter);
-
+app.use('/api/loans', loansRouter);
 
 app.get('/', (req, res) => {
   res.json({ msg: 'Bank Dashboard API running' });
