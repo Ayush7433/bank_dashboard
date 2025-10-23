@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import ReqireAuth from "./components/RequireAuth";
 import AppRoutes from "./components/AppRoutes";
 import LoanDetailsView from "./views/LoansDetailsView";
+import DashboardView from './views/DashboardView';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       }
     />
     <Route path="/loans/:loanId" element={<LoanDetailsView />} />
+    <Route path="/dashboard" element={<DashboardView />} />
   </Routes>
 </BrowserRouter>
   );

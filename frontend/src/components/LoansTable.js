@@ -53,6 +53,7 @@ export default function LoansTable({ refreshFlag, onRefresh }) {
                                 <th>Term</th>
                                 <th>Status</th>
                                 <th>Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>

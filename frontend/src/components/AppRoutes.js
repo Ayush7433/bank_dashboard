@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
-import Accounts from "./AccountTable";
+import Accounts from "../views/AccountsView";
 import Transactions from "../views/TransactionView";
-import Customers from "./CustomerTable";
+import Customers from "../views/CustomersView";
 import LoansView from "../views/LoansView";
 import { Routes, Route, Navigate } from "react-router-dom";
+import DashboardView from "../views/DashboardView";
 
 function AppRoutes() {
-    const [active, setActive] = useState('accounts');
+    const [active, setActive] = useState('dashboard');
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -30,6 +31,14 @@ function AppRoutes() {
                     <span className="navbar-brand">Banking Dashboard</span>
 
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <button
+                                className={`nav-link ${active === "dashboard" ? "active" : ""}`}
+                                onClick={() => setActive("dashboard")}
+                            >
+                                Dashboard
+                            </button>
+                        </li>
                         <li className="nav-item">
                             <button
                                 className={`nav-link ${active === "accounts" ? "active" : ""}`}
@@ -88,8 +97,9 @@ function AppRoutes() {
                 </div>
             </nav>
 
-        {/* Page content  */}
+            {/* Page content  */}
             <div className="container mt-4">
+                {active === "dashboard" && <DashboardView />}
                 {active === "accounts" && <Accounts />}
                 {active === "transactions" && isAdmin && <Transactions />}
                 {active === "customers" && <Customers />}
