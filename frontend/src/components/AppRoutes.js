@@ -96,6 +96,7 @@ function AppRoutes() {
                     </button>
                 </div>
             </nav>
+             
 
             {/* Page content  */}
             <div className="container mt-4">

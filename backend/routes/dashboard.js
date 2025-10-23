@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require('../db');
 
 //Dashboard metrics API
-router.get('/', async (req, res) =>{
-    try{
+router.get('/', async (req, res) => {
+    try {
         const [[{ total_customers }]] = await db.query('SELECT COUNT(*) AS total_customers FROM customers');
         const [[{ total_accounts }]] = await db.query('SELECT COUNT(*) AS total_accounts FROM accounts');
         const [[{ total_balance }]] = await db.query('SELECT SUM(balance) AS total_balance FROM accounts');
@@ -25,8 +25,27 @@ router.get('/', async (req, res) =>{
             total_deposits,
             total_withdrawals
         });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.get('/transactions_by_month', async (req, res) => {
+    try {
+        const sql = `
+            SELECT
+                DATE_FORMAT(created_at, "%Y-%m") AS month,
+                SUM(CASE WHEN type = 'CREDIT' THEN amount ELSE 0 END) AS deposits,
+                SUM(CASE WHEN type = 'DEBIT' THEN amount ELSE 0 END) AS withdrawals
+            FROM transactions
+            GROUP BY month
+            ORDER BY month ASC
+    `;
+
+    const [rows] = await db.query(sql);
+    res.json(rows);
     }catch(err){
-        res.status(500).json({ error : err.message });
+        res.status(500).json({ error: err.message });
     }
 });
 

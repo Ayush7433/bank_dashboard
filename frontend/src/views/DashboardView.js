@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { Line } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import TransactionsTrendChart from "../components/TransactionsTrendChart";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
 
 export default function DashboardView() {
     const [data, setData] = useState(null);
@@ -33,6 +39,7 @@ export default function DashboardView() {
                 <Card count={data.total_transactions} label="Transactions" color="secondary" />
                 <Card count={data.total_deposits} label="Deposits" color="success" prefix="₹" />
                 <Card count={data.total_withdrawals} label="Withdrawals" color="danger" prefix="₹" />
+                <TransactionsTrendChart />
             </div>
         </div>
     );
