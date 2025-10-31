@@ -6,6 +6,7 @@ import Customers from "../views/CustomersView";
 import LoansView from "../views/LoansView";
 import { Routes, Route, Navigate } from "react-router-dom";
 import DashboardView from "../views/DashboardView";
+import AuditLogsView from "../views/AuditLogsview";
 
 function AppRoutes() {
     const [active, setActive] = useState('dashboard');
@@ -79,6 +80,14 @@ function AppRoutes() {
                                 Loans
                             </button>
                         </li>
+                        <li className="nav-item">
+                            <button
+                                className={`nav-link ${active === "AuditLogsview" ? "active" : ""}`}
+                                onClick={() => setActive("AuditLogsview")}
+                            >
+                                Audit Logs
+                            </button>
+                        </li>
                     </ul>
 
                     <span className="navbar-text text-light me-3">
@@ -105,6 +114,7 @@ function AppRoutes() {
                 {active === "transactions" && isAdmin && <Transactions />}
                 {active === "customers" && <Customers />}
                 {active === "LoansView" && <LoansView />}
+                {active === "AuditLogsview" && <AuditLogsView />}
             </div>
         </div>
     );

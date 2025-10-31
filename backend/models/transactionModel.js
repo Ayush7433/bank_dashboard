@@ -41,7 +41,7 @@ async function getTransactions(filters = {}, limit = 100) {
     sql += ' AND balance_after <= ?';
     params.push(filters.max_balance_after);
   }
-  
+
   sql += ' ORDER BY created_at DESC LIMIT ?';
   params.push(Number(limit));
 

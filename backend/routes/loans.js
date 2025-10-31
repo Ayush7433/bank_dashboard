@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { json } = require('body-parser');
 
 
 //List loans
@@ -52,6 +53,10 @@ router.post('/', async (req, res) => {
             outstanding ?? principal,
             status || 'ONGOING'
         ]);
+
+        await db.query( "INSERT INTO audit_logs (user_id, action, details) VALUES (?,?,?)", 
+            [req.user.id, "Created Loan", JSON.stringify({ loan_id: req.params.id, ...req.body})]
+        );
         res.status(201).json({ id: result.insertId });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -72,6 +77,9 @@ router.put('/:id', async (req, res) => {
             `;
 
         await db.query(sql, [principal, interest_rate, term_months, outstanding, status, id]);
+        await db.query( "INSERT INTO audit_logs (user_id, action, details) VALUES (?,?,?)", 
+            [req.user.id, "Updated Loan", JSON.stringify({ loan_id: req.params.id, ...req.body})]
+        );
         res.json({ ok : true });
     }catch (err) {
         res.status(500).json({ error: err.message });
@@ -83,6 +91,9 @@ router.delete('/:id', async (req, res) => {
     try{
         const { id } = req.params;
         await db.query('DELETE FROM loans WHERE id = ?', [id]);
+        await db.query( "INSERT INTO audit_logs (user_id, action, details) VALUES (?,?,?)", [req.user.id, "Deleted Loan",
+            JSON.stringify({ loan_id: req.params.id, ...req.body})]
+        );
         res.json({ ok: true });
     }catch (err){
         res.status(500).json({ error: err.message });

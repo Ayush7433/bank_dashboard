@@ -22,6 +22,7 @@ const customersRouter = require('./routes/customers');
 const loansRouter = require('./routes/loans');
 const loanPaymentsRouter = require('./routes/loan_payments');
 const dashboardRouter = require('./routes/dashboard');
+const auditLogsrouter = require('./routes/audit_logs');
 
 
 app.use('/api/accounts', accountsRouter);
@@ -30,6 +31,7 @@ app.use('/api/customers', customersRouter);
 app.use('/api/loans', loansRouter);
 app.use('/api/loan_payments', loanPaymentsRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/audit_logs', auditLogsrouter);
 
 app.get('/', (req, res) => {
   res.json({ msg: 'Bank Dashboard API running' });

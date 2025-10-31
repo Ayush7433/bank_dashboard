@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Tx = require('../models/transactionModel');
+const db = require('../db');
 
 router.get('/', async (req, res) => {
   try {
@@ -24,6 +25,10 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     await Tx.createTransaction(req.body);
+    await db.query(
+      "INSERT INTO audit_logs (user_id, action, details) VALUES (?, ?, ?)",
+      [req.user.id, "Created Transaction", JSON.stringify(req.body)]
+    );
     res.status(201).json({ ok: true });
   } catch (err) {
     res.status(400).json({ error: err.message });

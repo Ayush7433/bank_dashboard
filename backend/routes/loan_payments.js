@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
             `;
 
         const [result] = await db.query(sql, [
-            loan_id, 
+            loan_id,
             payment_date,
             amount,
             status || 'PAID']
@@ -45,8 +45,13 @@ router.post('/', async (req, res) => {
         //Update loan outstanding amount
         await db.query('UPDATE loans SET outstanding = outstanding - ? WHERE id = ?', [amount, loan_id]);
 
-        res.status(201).json({ id: result.insertId});
-    }catch (err) {
+        await db.query(
+            "INSERT INTO audit_logs (user_id, action, details) VALUES (?, ?, ?)",
+            [req.user.id, "Created Loan Payment", JSON.stringify({ payment_id: result.insertId, ...req.body })]
+        );
+
+        res.status(201).json({ id: result.insertId });
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
@@ -54,7 +59,7 @@ router.post('/', async (req, res) => {
 //Delete loan payment
 router.delete('/:id', async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const [payment] = await db.query('SELECT * FROM loan_payments WHERE id = ?', [id]);
         if (payment.length === 0) {
@@ -67,8 +72,14 @@ router.delete('/:id', async (req, res) => {
         await db.query('UPDATE loans SET outstanding = outstanding + ? WHERE id = ?', [amount, loan_id]);
 
         await db.query('DELETE FROM loan_payments WHERE id = ?', [id]);
+
+        await db.query(
+            "INSERT INTO audit_logs (user_id, action, details) VALUES (?, ?, ?)",
+            [req.user.id, "Deleted Loan Payment", JSON.stringify({ payment_id: id })]
+        );
+
         res.json({ ok: true });
-    }catch (err) {
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
